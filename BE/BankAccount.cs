@@ -93,5 +93,15 @@ namespace BE
             // TODO: write your implementation of GetHashCode() here
             return AccountNumber;
         }
+
+        public IList<ITransaction> GetTransactions(DateTime from, DateTime to)
+        {
+            return Transactions.Where(t => t.DateTime >= from && t.DateTime <= to).ToList();           
+        }
+
+        public IList<ITransaction> GetTransactions(DateTime fromDate)
+        {
+            return (from t in Transactions where t.DateTime >= fromDate select t).ToList();
+        }
     }
 }

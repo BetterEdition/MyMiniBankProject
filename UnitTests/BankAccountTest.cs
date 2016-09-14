@@ -2,6 +2,8 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using BE;
 using Interfaces;
+using System.Collections.Generic;
+using System.Threading;
 
 namespace UnitTests
 {
@@ -207,6 +209,48 @@ namespace UnitTests
             {
                 Assert.AreEqual(oldInterestRate, account.InterestRate);
             }
+        }
+
+        [TestMethod]
+        public void GetTransactionListBetweenValidDates()
+        {
+            IBankAccount account = new BankAccount(1);
+
+            account.Deposit(1000);
+            Thread.Sleep(1000);
+            DateTime from = DateTime.Now;
+            account.Withdraw(400);
+            Thread.Sleep(1000);
+            DateTime to = DateTime.Now;
+            Thread.Sleep(1000);
+            account.Deposit(200);
+
+            Assert.AreEqual(3, account.Transactions.Count);
+            IList<ITransaction> result = account.GetTransactions(from, to);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(1, result.Count);
+            Assert.AreSame(result[0], account.Transactions[1]);
+        }
+        [TestMethod]
+        public void GetTransactionListFromValidDate()
+        {
+            IBankAccount account = new BankAccount(1);
+
+            account.Deposit(1000);
+            Thread.Sleep(1000);
+            DateTime from = DateTime.Now;
+            account.Withdraw(400);
+            Thread.Sleep(1000);
+            account.Deposit(200);
+
+            Assert.AreEqual(3, account.Transactions.Count);
+            IList<ITransaction> result = account.GetTransactions(from);
+
+            Assert.IsNotNull(result);
+            Assert.AreEqual(2, result.Count);
+            Assert.AreSame(result[0], account.Transactions[1]);
+            Assert.AreSame(result[1], account.Transactions[2]);
         }
     }
 }
