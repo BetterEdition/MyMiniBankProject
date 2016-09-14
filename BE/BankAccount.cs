@@ -12,6 +12,7 @@ namespace BE
         public const double DEFAULT_INTEREST_RATE = 0.01;
         public const double INTEREST_RATE_LOWERBOUND = 0.00;
         public const double INTEREST_RATE_UPPERBOUND = 0.10;
+
         private double m_interestRate;
 
         private int nextTransactionId = 1;
@@ -33,16 +34,25 @@ namespace BE
                 m_interestRate = value;
             }
         }
+
+        public IList<ICustomer> Owners { get; private set; }
         public IList<ITransaction> Transactions { get; private set; }
 
-        public BankAccount(int accNumber) : this(accNumber, 0.0) { }
+        public static BankAccount CreateBankAccount(ICustomer owner, int accNumber, double initialBalance = 0.00)
+        {
+            BankAccount account = new BankAccount(accNumber, initialBalance);
+            account.AddOwner(owner);
+            owner.AddBankAccount(account);
+            return account;
+        }
 
-        public BankAccount(int accNumber, double initialBalance)
+        internal BankAccount(int accNumber, double initialBalance)
         {
             AccountNumber = accNumber;
             Balance = initialBalance;
             InterestRate = DEFAULT_INTEREST_RATE;
             Transactions = new List<ITransaction>();
+            Owners = new List<ICustomer>();
         }
 
         public void Deposit(double amount)
@@ -102,6 +112,11 @@ namespace BE
         public IList<ITransaction> GetTransactions(DateTime fromDate)
         {
             return (from t in Transactions where t.DateTime >= fromDate select t).ToList();
+        }
+
+        public void AddOwner(ICustomer owner)
+        {
+            Owners.Add(owner);
         }
     }
 }

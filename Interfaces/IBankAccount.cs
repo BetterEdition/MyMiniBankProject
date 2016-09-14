@@ -16,6 +16,7 @@ namespace Interfaces
         void Deposit(double amount);
         void Withdraw(double amount);
         void AddInterest();
+        void AddOwner(ICustomer owner);
 
         IList<ITransaction> GetTransactions(DateTime from, DateTime to);
         IList<ITransaction> GetTransactions(DateTime from);
