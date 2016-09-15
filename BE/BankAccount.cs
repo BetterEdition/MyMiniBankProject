@@ -42,7 +42,6 @@ namespace BE
         {
             BankAccount account = new BankAccount(accNumber, initialBalance);
             account.AddOwner(owner);
-            owner.AddBankAccount(account);
             return account;
         }
 
@@ -116,7 +115,30 @@ namespace BE
 
         public void AddOwner(ICustomer owner)
         {
+            if (owner == null)
+            {
+                throw new ArgumentNullException("No owner specified");
+            }
+            if (Owners.Contains(owner))
+            {
+                throw new ArgumentException("Owner already registered for bank account.");
+            }
             Owners.Add(owner);
+            owner.AddBankAccount(this);
+        }
+
+        public void RemoveOwner(ICustomer owner)
+        {
+            if (owner == null)
+            {
+                throw new ArgumentNullException("No owner specified");
+            }
+            if (!Owners.Contains(owner))
+            {
+                throw new ArgumentException("Owner not registered for bank account.");
+            }
+            owner.BankAccounts.Remove(this);
+            Owners.Remove(owner);
         }
     }
 }

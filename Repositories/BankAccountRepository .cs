@@ -23,7 +23,7 @@ namespace Repositories
         {
             if (bankAccounts.Contains(account))
             {
-                throw new ArgumentException("Bank Account already exist");
+                throw new ArgumentException("Bank account already exist");
             }
             bankAccounts.Add(account);
         }
@@ -35,14 +35,17 @@ namespace Repositories
 
         public IBankAccount GetById(int id)
         {
-            return bankAccounts.Where(acc => acc.AccountNumber == id).SingleOrDefault();
+            foreach (IBankAccount acc in bankAccounts)
+                if (acc.AccountNumber == id)
+                    return acc;
+            return null;
         }
 
         public void Remove(IBankAccount account)
         {
             if (! bankAccounts.Contains(account))
             {
-                throw new ArgumentException("Unable to remove bank account");
+                throw new ArgumentException("Bank account does not exist.");
             }
             bankAccounts.Remove(account);
         }
