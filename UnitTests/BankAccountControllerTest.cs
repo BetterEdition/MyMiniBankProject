@@ -210,7 +210,7 @@ namespace UnitTests
             IBankAccount account1 = mgr.CreateNewBankAccount(customer1);
             IBankAccount account2 = mgr.CreateNewBankAccount(customer2);
 
-            IBankAccount result = mgr.GetById(account2.AccountNumber);
+            IBankAccount result = mgr.GetBankAccountById(account2.AccountNumber);
 
             Assert.IsNotNull(result);
             Assert.AreSame(account2, result);
@@ -227,7 +227,7 @@ namespace UnitTests
 
             IBankAccount account1 = mgr.CreateNewBankAccount(customer1);
 
-            IBankAccount result = mgr.GetById(2);
+            IBankAccount result = mgr.GetBankAccountById(2);
 
             Assert.IsNull(result);
         }

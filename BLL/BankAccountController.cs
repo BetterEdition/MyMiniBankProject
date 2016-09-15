@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
-    public class BankAccountController
+    public class BankAccountController : IBankAccountController
     {
-        private static int nextAccountNumber = 1;
+        private int nextAccountNumber = 1;
         private IRepository<IBankAccount, int> accounts;
 
         public BankAccountController(IRepository<IBankAccount, int> repository)
@@ -52,7 +52,7 @@ namespace BLL
             return accounts.GetAll();
         }
 
-        public IBankAccount GetById(int accNumber)
+        public IBankAccount GetBankAccountById(int accNumber)
         {
             return accounts.GetById(accNumber);
         }
