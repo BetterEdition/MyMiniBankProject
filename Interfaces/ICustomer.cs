@@ -7,7 +7,7 @@ namespace Interfaces
     {
         int Id { get; }
         String Name { get; set;  }
-        String Addresss { get; set; }
+        String Address { get; set; }
         String Phone { get; set; }
         String Email { get; set; }
         IList<IBankAccount> BankAccounts { get; set; }

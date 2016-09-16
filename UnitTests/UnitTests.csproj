@@ -66,6 +66,8 @@
     <Compile Include="CustomerTest.cs" />
     <Compile Include="BankAccountRepositoryTest.cs" />
     <Compile Include="BankAccountControllerTest.cs" />
+    <Compile Include="CustomerControllerTest.cs" />
+    <Compile Include="CustomerRepositoryTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\BE\BE.csproj">

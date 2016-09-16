@@ -21,7 +21,7 @@ namespace UnitTests
             Assert.IsNotNull(customer);
             Assert.AreEqual(id, customer.Id);
             Assert.AreEqual(name, customer.Name);
-            Assert.AreEqual(addresss, customer.Addresss);
+            Assert.AreEqual(addresss, customer.Address);
             Assert.AreEqual(phone, customer.Phone);
             Assert.AreEqual(email, customer.Email);
             Assert.IsNotNull(customer.BankAccounts);

@@ -5,7 +5,6 @@ using Interfaces;
 using BLL;
 using Repositories;
 using System.Collections.Generic;
-using System.Threading;
 
 namespace UnitTests
 {

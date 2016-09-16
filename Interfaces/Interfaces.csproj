@@ -43,6 +43,7 @@
     <Compile Include="IBankAccount.cs" />
     <Compile Include="ICustomer.cs" />
     <Compile Include="IBankAccountController.cs" />
+    <Compile Include="ICustomerController.cs" />
     <Compile Include="IRepository.cs" />
     <Compile Include="ITransaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,7 +11,7 @@ namespace BE
     {
         public int Id { get; }
         public string Name { get; set; }
-        public string Addresss { get; set; }
+        public string Address { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
         public IList<IBankAccount> BankAccounts { get; set; }
@@ -20,7 +20,7 @@ namespace BE
         {
             Id = id;
             Name = name;
-            Addresss = addresss;
+            Address = addresss;
             Phone = phone;
             Email = email;
             BankAccounts = new List<IBankAccount>();
@@ -46,6 +46,24 @@ namespace BE
                 throw new ArgumentException("Cannot remove non-empty bank account from customer");
 
             BankAccounts.RemoveAt(index);
+        }
+
+        // override object.Equals
+        public override bool Equals(object obj)
+        {
+            if (obj == null || GetType() != obj.GetType())
+            {
+                return false;
+            }
+
+            ICustomer other = (ICustomer)obj;
+            return Id == other.Id;
+        }
+
+        // override object.GetHashCode
+        public override int GetHashCode()
+        {
+            return Id.GetHashCode();
         }
     }
 }

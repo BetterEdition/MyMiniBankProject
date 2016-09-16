@@ -99,8 +99,7 @@ namespace BE
         // override object.GetHashCode
         public override int GetHashCode()
         {
-            // TODO: write your implementation of GetHashCode() here
-            return AccountNumber;
+            return AccountNumber.GetHashCode();
         }
 
         public IList<ITransaction> GetTransactions(DateTime from, DateTime to)
