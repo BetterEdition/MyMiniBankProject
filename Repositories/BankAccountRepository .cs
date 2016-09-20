@@ -19,7 +19,7 @@ namespace Repositories
             }
         }
 
-        public void Add(IBankAccount account)
+        virtual public void Add(IBankAccount account)
         {
             if (bankAccounts.Contains(account))
             {

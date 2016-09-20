@@ -11,10 +11,18 @@ namespace UnitTests
     [TestClass]
     public class BankAccountControllerTest
     {
+        private IRepository<IBankAccount, int> repository = null;
+
+        [TestInitialize]
+        public void init_Test()
+        {
+            repository = new BankAccountDBRepository();
+        }
+
         [TestMethod]
         public void CreateNewBankAccount_For_Customer_Test()
         {
-            IRepository<IBankAccount, int> repository = new BankAccountRepository();
+           // IRepository<IBankAccount, int> repository = new BankAccountRepository();
             BankAccountController mgr = new BankAccountController(repository);
 
             ICustomer customer = new Customer(1, "Name", "Address", "Phone", "Email");
@@ -40,7 +48,7 @@ namespace UnitTests
         [TestMethod]
         public void AddOwnerToBankAccount_New_Owner_Test()
         {
-            IRepository<IBankAccount, int> repository = new BankAccountRepository();
+            //IRepository<IBankAccount, int> repository = new BankAccountRepository();
             BankAccountController mgr = new BankAccountController(repository);
 
             ICustomer customer1 = new Customer(1, "Name", "Address", "Phone", "Email");
@@ -63,7 +71,7 @@ namespace UnitTests
         [TestMethod]
         public void AddOwnerToBankAccount_Existing_Owner_Expect_ArgumentException_Test()
         {
-            IRepository<IBankAccount, int> repository = new BankAccountRepository();
+            //IRepository<IBankAccount, int> repository = new BankAccountRepository();
             BankAccountController mgr = new BankAccountController(repository);
 
             ICustomer customer1 = new Customer(1, "Name", "Address", "Phone", "Email");
@@ -92,7 +100,7 @@ namespace UnitTests
         [TestMethod]
         public void AddOwnerToBankAccount_Null_Owner_Expect_ArgumentNullException_Test()
         {
-            IRepository<IBankAccount, int> repository = new BankAccountRepository();
+            //IRepository<IBankAccount, int> repository = new BankAccountRepository();
             BankAccountController mgr = new BankAccountController(repository);
 
             ICustomer customer1 = null;
@@ -112,7 +120,7 @@ namespace UnitTests
         [TestMethod]
         public void RemoveOwnerFromBankAccount_Existing_Owner_Test()
         {
-            IRepository<IBankAccount, int> repository = new BankAccountRepository();
+            //IRepository<IBankAccount, int> repository = new BankAccountRepository();
             BankAccountController mgr = new BankAccountController(repository);
 
             ICustomer customer1 = new Customer(1, "Name", "Address", "Phone", "Email");
@@ -131,7 +139,7 @@ namespace UnitTests
         [TestMethod]
         public void RemoveOwnerFromBankAccount_NonExisting_Owner_Expect_ArgumentException_Test()
         {
-            IRepository<IBankAccount, int> repository = new BankAccountRepository();
+            //IRepository<IBankAccount, int> repository = new BankAccountRepository();
             BankAccountController mgr = new BankAccountController(repository);
 
             ICustomer customer1 = new Customer(1, "Name", "Address", "Phone", "Email");
@@ -153,10 +161,11 @@ namespace UnitTests
                 Assert.AreSame(account1, customer1.BankAccounts[0]);
             }
         }
+
         [TestMethod]
         public void RemoveOwnerFromBankAccount_NULL_Owner_Expect_ArgumentNullException_Test()
         {
-            IRepository<IBankAccount, int> repository = new BankAccountRepository();
+            //IRepository<IBankAccount, int> repository = new BankAccountRepository();
             BankAccountController mgr = new BankAccountController(repository);
 
             ICustomer customer1 = new Customer(1, "Name", "Address", "Phone", "Email");
@@ -182,7 +191,7 @@ namespace UnitTests
         [TestMethod]
         public void GetAllBankAccounts_Test()
         {
-            IRepository<IBankAccount, int> repository = new BankAccountRepository();
+            //IRepository<IBankAccount, int> repository = new BankAccountRepository();
             BankAccountController mgr = new BankAccountController(repository);
 
             ICustomer customer1 = new Customer(1, "Name", "Address", "Phone", "Email");
@@ -200,7 +209,7 @@ namespace UnitTests
         [TestMethod]
         public void GetById_Existing_Account_Test()
         {
-            IRepository<IBankAccount, int> repository = new BankAccountRepository();
+            //IRepository<IBankAccount, int> repository = new BankAccountRepository();
             BankAccountController mgr = new BankAccountController(repository);
 
             ICustomer customer1 = new Customer(1, "Name", "Address", "Phone", "Email");
@@ -219,7 +228,7 @@ namespace UnitTests
         [TestMethod]
         public void GetById_Non_Existing_Account_Expect_Null_Test()
         {
-            IRepository<IBankAccount, int> repository = new BankAccountRepository();
+            //IRepository<IBankAccount, int> repository = new BankAccountRepository();
             BankAccountController mgr = new BankAccountController(repository);
 
             ICustomer customer1 = new Customer(1, "Name", "Address", "Phone", "Email");

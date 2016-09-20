@@ -4,16 +4,52 @@ using BE;
 using Repositories;
 using Interfaces;
 using System.Collections.Generic;
+using Moq;
+using System.Linq;
 
 namespace UnitTests
 {
     [TestClass]
     public class BankAccountRepositoryTest
     {
+        private static Mock<IRepository<IBankAccount, int>> mock = null;
+        private static IList<IBankAccount> items = null;
+
+        [ClassInitialize]
+        public static void classSetup(TestContext context)
+        {
+            mock = new Mock<IRepository<IBankAccount, int>>();
+
+            mock.Setup(x => x.GetAll()).Returns(() => items);
+            mock.SetupGet(x => x.Count).Returns(() => items.Count);
+            mock.Setup(x => x.GetById(It.IsAny<int>())).Returns((int i) => items.Where((acc) => acc.AccountNumber == i).SingleOrDefault());
+            mock.Setup(x => x.Add(It.IsAny<IBankAccount>())).Callback<IBankAccount>((a) =>
+            {
+                if (items.Contains(a))
+                    throw new ArgumentException();
+                else
+                    items.Add(a);
+            });
+            mock.Setup(x => x.Remove(It.IsAny<IBankAccount>())).Callback<IBankAccount>((a) =>
+            {
+                if (items.Contains(a))
+                    items.Remove(a);
+                else
+                    throw new ArgumentException();
+            });
+        }
+
+        [TestInitialize]
+        public void TestInitialize()
+        {
+            items = new List<IBankAccount>();
+        }
+
         [TestMethod]
         public void Create_BankAccountRepository_Test()
         {
-            IRepository<IBankAccount, int> accounts = new BankAccountRepository();
+            IRepository<IBankAccount, int> accounts = mock.Object;
+
             Assert.IsNotNull(accounts);
             Assert.AreEqual(0, accounts.Count);
         }
@@ -21,7 +57,7 @@ namespace UnitTests
         [TestMethod]
         public void Add_New_BankAccount_Test()
         {
-            IRepository<IBankAccount, int> accounts = new BankAccountRepository();
+            IRepository<IBankAccount, int> accounts = mock.Object;
 
             int accNumber = 1;
             ICustomer customer = new Customer(1, "Name", "Address", "Phone", "Email");
@@ -29,19 +65,22 @@ namespace UnitTests
 
             accounts.Add(account);
 
-            Assert.AreEqual(1, accounts.Count);
+            Assert.AreEqual(1, items.Count);
             Assert.AreSame(account, accounts.GetById(accNumber));
         }
 
         [TestMethod]
         public void Add_Existing_BankAccount_Expect_ArgumentException_Test()
         {
-            IRepository<IBankAccount, int> accounts = new BankAccountRepository();
+            IRepository<IBankAccount, int> accounts = mock.Object;
+
             int accNumber = 1;
             ICustomer customer = new Customer(1, "Name", "Address", "Phone", "Email");
             IBankAccount account = BankAccount.CreateBankAccount(customer, accNumber);
 
             accounts.Add(account);
+            int counter = accounts.Count;
+            Assert.AreEqual(1, counter);
 
            try
             {
@@ -58,7 +97,8 @@ namespace UnitTests
         [TestMethod]
         public void Remove_Existing_BankAccount_Test()
         {
-            IRepository<IBankAccount, int> accounts = new BankAccountRepository();
+            IRepository<IBankAccount, int> accounts = mock.Object;
+
             ICustomer customer = new Customer(1, "Name", "Address", "Phone", "Email");
             IBankAccount account1 = BankAccount.CreateBankAccount(customer, 1);
             IBankAccount account2 = BankAccount.CreateBankAccount(customer, 2);
@@ -74,7 +114,8 @@ namespace UnitTests
         [TestMethod]
         public void Remove_NonExisting_BankAccount_Expect_ArgumentException_Test()
         {
-            IRepository<IBankAccount, int> accounts = new BankAccountRepository();
+            IRepository<IBankAccount, int> accounts = mock.Object;
+
             ICustomer customer = new Customer(1, "Name", "Address", "Phone", "Email");
             IBankAccount account1 = BankAccount.CreateBankAccount(customer, 1);
             IBankAccount account2 = BankAccount.CreateBankAccount(customer, 2);
@@ -96,7 +137,7 @@ namespace UnitTests
         [TestMethod]
         public void GetById_Existing_BankAccount_Test()
         {
-            IRepository<IBankAccount, int> accounts = new BankAccountRepository();
+            IRepository<IBankAccount, int> accounts = mock.Object;
             ICustomer customer = new Customer(1, "Name", "Address", "Phone", "Email");
             IBankAccount account1 = BankAccount.CreateBankAccount(customer, 1);
             IBankAccount account2 = BankAccount.CreateBankAccount(customer, 2);
@@ -113,7 +154,8 @@ namespace UnitTests
         [TestMethod]
         public void GetById_NonExisting_BankAccount_ExpectNull_Test()
         {
-            IRepository<IBankAccount, int> accounts = new BankAccountRepository();
+            IRepository<IBankAccount, int> accounts = mock.Object;
+
             ICustomer customer = new Customer(1, "Name", "Address", "Phone", "Email");
             IBankAccount account1 = BankAccount.CreateBankAccount(customer, 1);
 
@@ -127,7 +169,7 @@ namespace UnitTests
         [TestMethod]
         public void GetAll_Test()
         {
-            IRepository<IBankAccount, int> accounts = new BankAccountRepository();
+            IRepository<IBankAccount, int> accounts = mock.Object;
             ICustomer customer = new Customer(1, "Name", "Address", "Phone", "Email");
             IBankAccount account1 = BankAccount.CreateBankAccount(customer, 1);
             IBankAccount account2 = BankAccount.CreateBankAccount(customer, 2);

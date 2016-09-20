@@ -9,7 +9,6 @@ namespace Interfaces
     public interface IRepository<T, K>
     {
         int Count { get; }
-
         void Add(T e);
         void Remove(T e);
         T GetById(K id);
